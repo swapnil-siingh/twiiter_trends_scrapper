@@ -25,16 +25,16 @@ Add the ChromeDriver executable to your system PATH or place it in your project 
 
 ##Usage
 
-Running the Scraper
+#Running the Scraper
 
-Run the script with:
+#Run the script with:
 // python app.py
 
 
-Future Enhancements
+#Future Enhancements
 
-Add support for rotating proxies.
+-Add support for rotating proxies.
 
-Implement advanced data visualization.
+-Implement advanced data visualization.
 
-Include sentiment analysis of trending topics.
+-Include sentiment analysis of trending topics.
