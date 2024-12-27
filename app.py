@@ -47,9 +47,10 @@ def run_script():
             return jsonify({"error": "Username or password missing"}), 400
         
         end_time = datetime.utcnow()
+        
+        # This ip address when using proxies
         ip_address = requests.get('https://api.ipify.org').text
-
-
+        print("ip address is this",ip_address)
         # Pass the credentials to the scraper using environment variables
         subprocess.run(
             ["python", "scraper.py", username, password],
@@ -59,7 +60,7 @@ def run_script():
             "trends": [],  # Replace with actual trends
             "timestamp": end_time,  # Store the UTC timestamp
             "ip_address": ip_address,  # Store the IP address
-            "unique_id": "unique_id_value"  # Generate unique ID 
+            "unique_id":"unique_id_value"  # Generate unique ID 
         })
         print(" time is this",end_time)
         return jsonify({"message": "Scraper ran successfully!"}), 200

@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from pymongo import MongoClient
+import socket
 import random
 import uuid
 import time
@@ -16,6 +17,9 @@ CHROME_DRIVER_PATH = 'C:/Program Files/drivers/chromedriver-win64/chromedriver.e
 client = MongoClient("mongodb://localhost:27017/") 
 db = client.twitter_scraper
 collection = db.trends
+# This is device ip address
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
 def scrape_trending_topics(username, password):
     # ! Area Under Construction
     chrome_options = Options()
@@ -68,6 +72,7 @@ def scrape_trending_topics(username, password):
             "unique_id": str(uuid.uuid4()),
             "trends": trending_topics,
             "timestamp": datetime.datetime.now(),
+            "ip_address": ip_address
             
         }
         collection.insert_one(scraped_data)
