@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Twitter Scraper</title>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+
+    </head>
+
+    <body class="bg-gray-900 text-white w-screen h-screen flex flex-col items-center justify-center">
+        <h1 class="text-4xl font-semibold">Twitter Trending Topics Scraper</h1>
+        <div class="flex flex-row items-center gap-20 justify-center">
+
+            <form id="scrapeForm" class="max-w-md mx-auto mt-12 text-xl">
+                <label for="username" class="block ">Username:</label>
+                <input class="bg-transparent border-2 rounded active:bg-transparent" type="text" id="username"
+                       name="username" required><br><br>
+
+                <label for="password" class="block">Password:</label>
+                <input class="bg-transparent border-2 rounded active:bg-transparent" type="password" id="password"
+                       name="password" required><br><br>
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Run
+                    Scraper</button>
+            </form>
+
+            <div id="results" class="mt-10">
+
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("scrapeForm").addEventListener("submit", async (e) => {
+                e.preventDefault(); // Prevent form from refreshing the page
+
+                const formData = new FormData(e.target);
+
+                // Send username and password to the backend
+                const runScriptResponse = await fetch("/run_script", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: formData.get("username"),
+                        password: formData.get("password"),
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const runScriptResult = await runScriptResponse.json();
+                const resultsDiv = document.getElementById("results");
+
+                if (runScriptResponse.ok) {
+                    // Wait for the scraper to complete and fetch the results
+                    const getDataResponse = await fetch("/get_data");
+                    const getDataResult = await getDataResponse.json();
+                    const options = {
+                        timeZone: "Asia/Kolkata",  // Example for India
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit"
+                    };
+                    // const localTime = new Intl.DateTimeFormat("en-US", options).format(new Date(getDataResult.timestamp));
+
+
+
+                    if (getDataResponse.ok) {
+                        resultsDiv.innerHTML = `
+                        <h2 class="text-3xl">Trending Topics:</h2>
+                        <ul class="list-disc">
+                            ${getDataResult.trends.map((trend) => `<li>${trend}</li>`).join("")}
+                        </ul>
+                        <p><strong>Timestamp:</strong> ${getDataResult.timestamp}</p>
+                        <p><strong>IP Address:</strong> ${getDataResult.ip_address}</p>
+                    `;
+                    } else {
+                        resultsDiv.innerHTML = `<p style="color: red;">Error fetching results: ${getDataResult.message}</p>`;
+                    }
+                } else {
+                    resultsDiv.innerHTML = `<p style="color: red;">Error: ${runScriptResult.error}</p>`;
+                }
+            });
+        </script>
+    </body>
+
+</html>
