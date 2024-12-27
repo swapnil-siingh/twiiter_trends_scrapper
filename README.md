@@ -24,7 +24,7 @@ Download ChromeDriver from the official site.
 Add the ChromeDriver executable to your system PATH or place it in your project directory.
 
 2. Install all the libraries from requirement.txt file
-   pip install -r requirements.txt
+      pip install -r requirements.txt
 
 
 ##Usage
