@@ -14,9 +14,27 @@ Configurable browser options (e.g., headless mode, full-screen mode).
 
 Supports output in structured formats (JSON, CSV, etc.).
 
+
+Setup
+
+1. Install ChromeDriver
+
+Download ChromeDriver from the official site.
+
+Add the ChromeDriver executable to your system PATH or place it in your project directory.
+
 ##Usage
 
 Running the Scraper
 
 Run the script with:
 // python app.py
+
+
+Future Enhancements
+
+Add support for rotating proxies.
+
+Implement advanced data visualization.
+
+Include sentiment analysis of trending topics.
